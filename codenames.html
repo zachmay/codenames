@@ -1,0 +1,100 @@
+<html>
+    <head>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
+        <script type="text/javascript" src="https://fb.me/react-0.13.3.min.js"></script>
+        <script type="text/javascript" src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+
+        <style>
+            #codenames {
+            }
+            #codenames div.board {
+                border: none
+                margin: auto auto;
+            }
+            #codenames div.board div.row {
+                margin: 0 0 15px 0;
+            }
+            #codenames div.board div.row div.cell {
+                margin: 0 15px 0 0;
+                display: inline-block;
+                width: 5em;
+                height: 5em;
+                font-size: 24pt;
+                text-align: center;
+                vertical-align: middle;
+                box-shadow: 5px 5px 5px #888888;
+            }
+            #codenames div.board div.row div.cell.red {
+                border: 1px solid #CC0000;
+                background-color: #990000;
+                color: #ffffff;
+            }
+            #codenames div.board div.row div.cell.blue {
+                border: 1px solid #000066;
+                background-color: #000099;
+                color: #ffffff;
+            }
+            #codenames div.board div.row div.cell.assassin {
+                border: 1px solid #333333;
+                background-color: #000000;
+                color: #ffffff;
+            }
+            #codenames div.board div.row div.cell.bystander {
+                border: 1px solid #ddddbb;
+                background-color: #eeeecc;
+                color: #000000;
+            }
+            #codenames div.board div.row div.cell.clear {
+                border: 1px solid #666666;
+                background-color: #ffffff;
+                color: #ffffff;
+            }
+        </style>
+
+        <script type="text/jsx">
+            Codenames = React.createClass({
+                propTypes: {
+                    seed: React.PropTypes.number
+                },
+                getDefaultProps: function () {
+                    return {
+                        seed: 1000
+                    }
+                },
+                getInitialState: function () {
+                    board: [1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,9,8,8,8,8,8,8,8];
+                    return {
+                        board: [ [1,1,1,1,1], [1,1,1,1,0], [0,0,0,0,0], [0,0,9,8,8], [8,8,8,8,8] ]
+                    }
+                },
+                render: function () {
+                    var mapRow = function(row) {
+                        return React.DOM.div({ className: 'row' }, _.collect(row, mapCell));
+                    }
+
+                    var mapCell = function(cell) {
+                        var className = 'cell';
+                        if ( cell == 0 ) {
+                            className += ' red';
+                        } else if ( cell == 1 ) {
+                            className += ' blue';
+                        } else if ( cell == 9 ) {
+                            className += ' assassin';
+                        } else {
+                            className += ' bystander';
+                        }
+
+                        return React.DOM.div({ className: className }, "");
+                    }
+
+                    return React.DOM.div({ className: 'board' }, _.collect(this.state.board, mapRow));
+                }
+            });
+
+            React.render(<Codenames />, document.getElementById('codenames'));
+        </script>
+    </head>
+    <body>
+        <div id="codenames"></div>
+    </body>
+</html>
